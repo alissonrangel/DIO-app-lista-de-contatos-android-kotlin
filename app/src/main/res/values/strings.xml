@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Lista de contatos com API</string>
+    <string name="iv_photograph_content_description">Imagem do Contato</string>
+    <string name="contact_name">Nome</string>
+    <string name="contact_phone">Telefone</string>
+    <string name="contact_create">Criar</string>
+</resources>

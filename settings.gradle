@@ -1,0 +1,2 @@
+rootProject.name = "Lista de contatos com API"
+include ':app'
