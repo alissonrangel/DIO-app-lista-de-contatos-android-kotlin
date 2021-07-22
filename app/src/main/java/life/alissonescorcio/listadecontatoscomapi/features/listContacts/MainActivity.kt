@@ -12,19 +12,27 @@ import kotlinx.android.synthetic.main.activity_main.*
 import life.alissonescorcio.listadecontatoscomapi.data.DataSourceRemote
 import life.alissonescorcio.listadecontatoscomapi.data.ContactsCallback
 import life.alissonescorcio.listadecontatoscomapi.R
+import life.alissonescorcio.listadecontatoscomapi.databinding.ActivityMainBinding
 import life.alissonescorcio.listadecontatoscomapi.features.addContact.CreateContactActivity
+import life.alissonescorcio.listadecontatoscomapi.features.detailContact.DetailContactActivity
 import life.alissonescorcio.listadecontatoscomapi.model.Contact
 import life.alissonescorcio.listadecontatoscomapi.utils.Constants
 
-class MainActivity : AppCompatActivity(), ClickItemContactListener {
+class MainActivity : AppCompatActivity() {
 
+    /*
     private val rvList: RecyclerView by lazy {
         findViewById<RecyclerView>(R.id.rv_list)
     }
 
     private val adapter = ContactListAdapter(this)
+    */
 
     //private lateinit var contactListAdapter: ContactListAdapter
+
+    private lateinit var binding: ActivityMainBinding
+
+    private lateinit var contactListAdapter: ContactListAdapter
 
     private val createActivityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
@@ -43,14 +51,31 @@ class MainActivity : AppCompatActivity(), ClickItemContactListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        //setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        updateList()
-        bindViews()
+        binding.toolbar.title = getString(R.string.app_name)
 
-        fab.setOnClickListener {
+
+        //updateList()
+        //bindViews()
+
+        binding.fab.setOnClickListener {
             val intent = Intent(this@MainActivity, CreateContactActivity::class.java)
             createActivityLauncher.launch(intent)
+        }
+
+        contactListAdapter = ContactListAdapter { contact, position ->
+            detailContact(contact.id, position)
+        }
+
+        binding.rvList.apply {
+            adapter = contactListAdapter
+            layoutManager = LinearLayoutManager(this@MainActivity)
+
+            updateList()
         }
 
 //        rvList.apply {
@@ -74,7 +99,7 @@ class MainActivity : AppCompatActivity(), ClickItemContactListener {
         DataSourceRemote().getAll(object : ContactsCallback {
             override fun onSucesso(contacts: List<Contact>?) {
                 contacts?.let {
-                    adapter.updateList(it)
+                    contactListAdapter.updateList(it)
                 }
             }
             override fun onFalha(t: Throwable) {
@@ -83,7 +108,7 @@ class MainActivity : AppCompatActivity(), ClickItemContactListener {
             }
         })
     }
-
+    /*
     private fun bindViews(){
         rvList.adapter = adapter
         rvList.layoutManager = LinearLayoutManager(this)
@@ -91,15 +116,16 @@ class MainActivity : AppCompatActivity(), ClickItemContactListener {
         //val list = getListContacts()
         //adapter.updateList(list)
     }
+     */
 
-    private fun detailTodo(todoId: Int, position: Int){
-//        val intent = Intent(this, DetailTodoActivity::class.java)
-//        intent.putExtra(Constants.KEY_EXTRA_TODO_ID, todoId)
-//        intent.putExtra(Constants.KEY_EXTRA_TODO_INDEX, position)
-//        createActivityLauncher.launch(intent)
+    private fun detailContact(contactId: Int, position: Int){
+        val intent = Intent(this, DetailContactActivity::class.java)
+        intent.putExtra(Constants.KEY_EXTRA_TODO_ID, contactId)
+        intent.putExtra(Constants.KEY_EXTRA_TODO_INDEX, position)
+        createActivityLauncher.launch(intent)
     }
 
-
+    /*
     override fun clickItemContact(contact: Contact) {
 //        val intent = Intent(this, ContactDetail::class.java)
 //
@@ -107,4 +133,5 @@ class MainActivity : AppCompatActivity(), ClickItemContactListener {
 //        startActivity(intent)
         Toast.makeText(this, "Clicou", Toast.LENGTH_SHORT).show()
     }
+     */
 }

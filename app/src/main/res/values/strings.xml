@@ -4,4 +4,6 @@
     <string name="contact_name">Nome</string>
     <string name="contact_phone">Telefone</string>
     <string name="contact_create">Criar</string>
+    <string name="remove_todo">Remover Contato</string>
+    <string name="detail_contact_tv_header_text">#%2$d - %1$s</string>
 </resources>

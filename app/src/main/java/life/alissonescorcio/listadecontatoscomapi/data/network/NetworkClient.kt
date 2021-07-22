@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-private const val BASE_URL = "https://suaapi/"
+private const val BASE_URL = "https://api/"
 
 class NetworkClient {
 
